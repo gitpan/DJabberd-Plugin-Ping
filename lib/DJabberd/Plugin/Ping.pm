@@ -12,11 +12,11 @@ DJabberd::Plugin::Ping - Add support for "XEP 0199, Xmpp Ping" to DJabberd.
 
 =head1 VERSION
 
-Version 0.45
+Version 0.46
 
 =cut
 use vars qw($VERSION);
-$VERSION = '0.45';
+$VERSION = '0.46';
 
 =head1 SYNOPSIS
 
@@ -39,11 +39,11 @@ sub register {
     my ($self, $vhost) = @_;
     my $private_cb = sub {
         my ($vh, $cb, $iq) = @_;
-        unless ($iq->isa('DJabberd::IQ') and defined $iq->to) {
+        unless ($iq->isa('DJabberd::IQ')) {
             $cb->decline;
             return;
         }
-        unless ($iq->to eq $vhost->{server_name}) {
+        unless ( ! $iq->to || $iq->to eq $vhost->{server_name}) {
             $cb->decline;
             return;
         }

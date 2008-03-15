@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use Test::More tests => 3;
+use Test::More tests => 5;
 use lib 't/lib';
 use lib 'lib';
 BEGIN {  $ENV{LOGLEVEL} ||= "FATAL" }
@@ -36,6 +36,14 @@ ok($xml->id eq '1001', 'IQ id');
 ok($xml->type eq 'result', 'IQ type');
 # TODO version ?
 
+$client->send_xml(qq{<iq type="get" id="1002" >
+    <ping xmlns="urn:xmpp:ping" />
+</iq>});
+
+$xml = $client->recv_xml_obj;
+bless $xml, 'DJabberd::IQ';
+ok($xml->id eq '1002', 'IQ id');
+ok($xml->type eq 'result', 'IQ type');
 
 
 
